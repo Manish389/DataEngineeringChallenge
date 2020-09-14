@@ -1,0 +1,25 @@
+================================
+---> Running in intellij <----
+================================
+1. Open FifaInterviewProject in Intellij (Please use scala version 2.11.11)
+2. Input file data.csv should be present in InputData Directory, which is also 2nd Argument[args(1)]
+3. OutputData is Output Directory and 3rd Argument[args(2)]  where the Output file will be save with daily timestamp
+4. Please provide greenplum hostname, port, schema_name, user_name, password, table_name in greenplum.properties file
+5. Run the fifaDataAnalysis object with below arguments :
+        a. args(0) -> local
+        b. args(1) -> InputData
+        c. args(2) -> OutputData
+
+================================
+---> Running the jar file <----
+================================
+1. Please provide greenplum hostname, port, schema_name, user_name, password, table_name in greenplum.properties file
+and Clean and package from lifecycle of maven project
+2. .jar file will be generated in Target Folder
+3. Rename the jar file as fifa.jar and Copy the jar to specific directory in Edge Node using WinSCP.
+4. As said, data volume and frequency of loading may increase, we need to provide configuration parameters in spark submit
+4. Run Spark Submit Job :
+    spark-submit --class fifaData  --master yarn --deploy-mode cluster \
+    --num-executors 5 --conf spark.yarn.executor.memoryOverhead=4096 --executor-memory 4G --conf spark.yarn.driver.memoryOverhead=4096 \
+    --driver-memory 4G --executor-cores 5 --driver-cores 5 --conf spark.sql.shuffle.partitions=30 --conf spark.default.parallelism=100 \
+    <jar path>/fifa.jar yarn <input path of data.csv > <output path of the file>
